@@ -1,0 +1,33 @@
+.bug {
+  width: 30%;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.bug-header {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.bug-description {
+  margin-bottom: 5px;
+}
+
+.assigned-to {
+  margin-bottom: 5px;
+}
+
+label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+select {
+  width: 100%;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
