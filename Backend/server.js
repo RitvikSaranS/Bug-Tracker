@@ -1,12 +1,30 @@
 const express = require("express");
 const usersQuery = require("./db/db-controllers/usersDbController");
+const bugsQuery = require("./db/db-controllers/bugsDbController");
 
 const app = express();
 const port = 3000;
 
 app.get("/users", (req, res) => {
-  res.json(usersQuery("SELECT", "SELECT * FROM Users"));
-  res.end();
+  usersQuery("SELECT", "SELECT * FROM Users")
+    .then(
+      (x) => res.json(x),
+      (err) => console.log(err)
+    )
+    .catch((error) => {
+      console.error(error);
+    });
+});
+
+app.get("/bugs", (req, res) => {
+  bugsQuery("SELECT", "SELECT * FROM Bugs")
+    .then(
+      (x) => res.json(x),
+      (err) => console.log(err)
+    )
+    .catch((error) => {
+      console.error(error);
+    });
 });
 
 app.listen(port, () => {
