@@ -1,32 +1,37 @@
-bugTemplate = `<div class="bug"><div class="bug-header"><%%></div><div class="bug-description"><%%></div><div class="assigned-to"><%%></div></div>`;
-assigneeTemplate = `<option value="<%%>"><%%></option>`;
+// Models and Templates
 
-// allBugsArray = [
-//   {
-//     bugHeader: "Missing Header",
-//     bugDescription: "The header is missing in the home page",
-//     assignedTo: "Shyam",
-//   },
-//   {
-//     bugHeader: "Missing Footer",
-//     bugDescription: "The footer is missing in the home page",
-//     assignedTo: "Sarang",
-//   },
-//   {
-//     bugHeader: "Missing Sidebar",
-//     bugDescription: "The sidebar is missing in the home page",
-//     assignedTo: "Ritvik",
-//   },
-// ];
+class Bug {
+  constructor(bugId, header, description, userId, status, completebyDate) {
+    this.bugId = bugId;
+    this.header = header;
+    this.description = description;
+    this.userId = userId;
+    this.status = status;
+    this.completebyDate = completebyDate;
+  }
+}
 
-// allAssigneeArray = ["Sarang", "Shyam", "Ritvik", "Athul"];
+class User {
+  constructor(userId, permission, username) {
+    this.userId = userId;
+    this.permission = permission;
+    this.username = username;
+  }
+}
+
+const bugTemplate = `<div class="bug"><div class="bug-header"><%%></div><div class="bug-description"><%%></div><div class="assigned-to"><%%></div><div class="status"><%%></div><div class="completeby-date"><%%></div></div>`;
+const UserTemplate = `<option value="<%%>"><%%></option>`;
+
+// Data Fetchers
 
 function getUsers() {
   const requestUrl = "http://localhost:3000/users";
   fetch(requestUrl)
     .then((response) => response.json())
     .then((data) => {
-      console.log(data);
+      let allUsersArray = [];
+      data.forEach((user) => allUsersArray.push(user.username));
+      fillAssignees(allUsersArray);
     });
 }
 
@@ -35,11 +40,13 @@ function getBugs() {
   fetch(requestUrl)
     .then((response) => response.json())
     .then((data) => {
-      console.log(data);
+      fillBugs(data);
     });
 }
 
-function fillBugs() {
+// Fill in DOM
+
+function fillBugs(allBugsArray) {
   let allBugs = "";
   for (let bug of allBugsArray) {
     let sampleBugTemplate = bugTemplate;
@@ -49,16 +56,16 @@ function fillBugs() {
     allBugs += sampleBugTemplate;
   }
   document.querySelector(".bugs").innerHTML = allBugs;
-  fillAssignees();
 }
 
-function fillAssignees() {
-  let allAssignees = "";
-  for (let assignee of allAssigneeArray) {
-    allAssignees += assigneeTemplate.replaceAll("<%%>", assignee);
+function fillAssignees(allUsersArray) {
+  let allUsers = "";
+  for (let Users of allUsersArray) {
+    let sampleUserTemplate = UserTemplate;
+    allUsers += sampleUserTemplate.replaceAll("<%%>", Users);
   }
   document.querySelectorAll("#assign-to").forEach((x) => {
-    x.innerHTML = allAssignees;
+    x.innerHTML = allUsers;
   });
 }
 
